@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
 
+import { Fragment } from 'react';
+import './App.css';
+import BooksContainer from './components/BooksContainer/BooksContainer';
+import NavBar from './components/NavBar/NavBar';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import BookSearch from './pages/BookSearch/BookSearch';
+import SavedBooks from './pages/SavedBooks/SavedBooks';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+<BrowserRouter>
+<NavBar/>
+<Routes>
+<Route path='/'  element={<BookSearch/>}/>
+<Route  element={<ProtectedRoute/>}>
+<Route path='saved'  element={<SavedBooks/>}/>
+<Route path='login'  element={<Login/>}/>
+<Route path='register'  element={<Register/>}/>
+</Route>
+</Routes>
+</BrowserRouter>
   );
 }
 
