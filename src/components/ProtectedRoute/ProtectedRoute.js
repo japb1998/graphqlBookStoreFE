@@ -1,9 +1,8 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom';
-
+import {retreiveToken} from '../../utils/auth';
 export default function ProtectedRoute() {
-    const isAuth = true;
-
-    return (!isAuth ? <Navigate to="/"/> : <Outlet/> )
+    const isAuth = retreiveToken();
+    return (!isAuth ? <Navigate to="/login"/> : <Outlet/> )
 
 }

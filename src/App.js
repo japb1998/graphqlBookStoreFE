@@ -17,9 +17,9 @@ function App() {
 <Route path='/'  element={<BookSearch/>}/>
 <Route  element={<ProtectedRoute/>}>
 <Route path='saved'  element={<SavedBooks/>}/>
+</Route>
 <Route path='login'  element={<Login/>}/>
 <Route path='register'  element={<Register/>}/>
-</Route>
 </Routes>
 </BrowserRouter>
   );
