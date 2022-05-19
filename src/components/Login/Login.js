@@ -11,7 +11,7 @@ export default function Login() {
        variables:{
            ...form
        },
-        errorPolicy: 'all' 
+        errorPolicy: 'none' 
     })
     function onChange(e) {
         const value = e.target.value;
@@ -20,11 +20,11 @@ export default function Login() {
     }
     async function onSubmit(e) {
         e.preventDefault();
-        console.log(form)
-        const {data:{login:{token}}} = await login();
-        console.log(data);
+        const {data:{login:{token}},error} = await login();
+        if(!data)return 
         storeToken(token);
-        navigate("/")    
+        navigate("/") 
+        if(error)console.error(error)
     }
     
     return (
