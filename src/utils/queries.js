@@ -53,3 +53,35 @@ export const GET_ME = gql`query getMe {
         }
     }
 }`
+
+export const SAVE_BOOK = gql`
+  mutation saveBook($input: bookInput!) {
+    saveBook(input: $input) {
+      bookCount
+      savedBooks {
+        bookId
+        authors
+        description
+        image
+        link
+        title
+      }
+    }
+  }
+`;
+
+export const REMOVE_BOOK = gql`
+  mutation removeBook($id: ID!) {
+    removeBook(bookId: $id) {
+      bookCount
+      savedBooks {
+        bookId
+        authors
+        description
+        image
+        link
+        title
+      }
+    }
+  }
+`;

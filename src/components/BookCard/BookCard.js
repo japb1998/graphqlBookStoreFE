@@ -1,24 +1,70 @@
 import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK, GET_ME, REMOVE_BOOK } from "../../utils/queries";
+export default function BookCard({ book,saved,removeBook }) {
 
-export default function BookCard({ children,saved,removeBook }) {
-    
+  //refetch queries after we add a book, so we can update the cache
+  const [saveBookMutation] = useMutation(SAVE_BOOK,{
+    refetchQueries:[
+    GET_ME,
+    'getMe'
+    ], onError:(error)=>{
+      console.error({error})
+    }
+  });
+  const [deleteBookMutation] = useMutation(REMOVE_BOOK,{
+    refetchQueries:[
+    GET_ME,
+    'getMe'
+    ], onError:(error)=>{
+      console.error({error})
+    }
+  });
+
+  function handleSave () {
+    console.log(book)
+   saveBookMutation({
+     variables: {
+       input:{...book}
+     }
+   });
+  }
+  function handleRemove() {
+    deleteBookMutation({
+      variables: {
+        id: book.bookId,
+      },
+    });
+  }
     return (
-      <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-        <div>
-          <img className="rounded-t-lg" src={children.image} alt="" />
+      <div className="max-w-sm h-[24rem] bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 relative">
+        <div className="overflow-hidden w-full bg-gray-200 h-[110px] p-[5px]">
+          {book?.image && (
+            <img
+              className="rounded-full h-[100px] w-[100px]"
+              src={book.image}
+              alt=""
+            />
+          )}
         </div>
         <div className="p-5">
-          <a href="#">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {children.title}
-            </h5>
-          </a>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            {children.description}
-          </p>
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            {book?.title || "N/A"}
+          </h5>
+
+          {book?.description && book?.description.length > 70 ? (
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              {book?.description.substring(0, 70)}
+              <span className="text-blue-400">...Read more</span>
+            </p>
+          ) : (
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              {book?.description}
+            </p>
+          )}
           <button
-            onClick={()=> removeBook(children.id)}
-            className={`inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white  rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 bg-blue-600  relative`}
+            onClick={saved ? handleRemove : handleSave}
+            className={`inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white  rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 bg-blue-600  absolute bottom-[10px] left-[10px]`}
           >
             {saved && (
               <span className="flex h-3 w-3 top-0 -mt-1 -ml-1 left-0 absolute">
