@@ -11,7 +11,9 @@ import Register from './components/Register/Register'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 function App() {
   return (
+
 <BrowserRouter>
+
 <NavBar/>
 <Routes>
 <Route path='/'  element={<BookSearch/>}/>
@@ -21,6 +23,7 @@ function App() {
 <Route path='login'  element={<Login/>}/>
 <Route path='register'  element={<Register/>}/>
 </Routes>
+
 </BrowserRouter>
   );
 }

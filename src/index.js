@@ -12,7 +12,7 @@ import {
 } from "@apollo/client";
 import {retreiveToken}from './utils/auth'
 import { setContext } from '@apollo/client/link/context';
-
+import {StoreProvider} from './store/store';
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
 });
@@ -29,13 +29,24 @@ const authLink = setContext((_, { headers }) => {
 });
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  defaultOptions:{
+    watchQuery:{
+      fetchPolicy:'no-cache'
+    },
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+    }
+  }
 });
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <StoreProvider>
   <ApolloProvider client={client}>
     <App />
   </ApolloProvider>
+  </StoreProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

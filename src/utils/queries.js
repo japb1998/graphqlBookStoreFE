@@ -44,7 +44,7 @@ export const GET_ME = gql`query getMe {
         email
         bookCount
         savedBooks{
-            bookId
+                bookId
                authors
                description
                image

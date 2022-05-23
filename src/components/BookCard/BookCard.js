@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client';
+import { useStore } from '../../store/store';
 import { SAVE_BOOK, GET_ME, REMOVE_BOOK } from "../../utils/queries";
 export default function BookCard({ book,saved,removeBook }) {
-
+  const {dispatch} = useStore();
   //refetch queries after we add a book, so we can update the cache
   const [saveBookMutation] = useMutation(SAVE_BOOK,{
-    refetchQueries:[
-    GET_ME,
-    'getMe'
-    ], onError:(error)=>{
+    onCompleted:({data})=>{
+      dispatch({action:'saveBook',payload:{...book}})
+    },
+    onError:(error)=>{
       console.error({error})
     }
   });
   const [deleteBookMutation] = useMutation(REMOVE_BOOK,{
-    refetchQueries:[
-    GET_ME,
-    'getMe'
-    ], onError:(error)=>{
+    onCompleted:({data})=>{
+      dispatch({action:'deleteBook',payload:book.bookId})
+    },
+     onError:(error)=>{
       console.error({error})
     }
   });
 
   function handleSave () {
-    console.log(book)
    saveBookMutation({
      variables: {
        input:{...book}
@@ -80,9 +80,9 @@ export default function BookCard({ book,saved,removeBook }) {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               ></path>
             </svg>
           </button>

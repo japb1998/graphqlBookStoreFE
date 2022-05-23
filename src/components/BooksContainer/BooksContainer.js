@@ -1,13 +1,13 @@
 import React from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useStore } from '../../store/store';
 import BookCard from '../BookCard/BookCard'
 import './index.css'
 
-export default function BooksContainer({ BOOKS , existingBooks}) {
-  console.log(existingBooks)
+export default function BooksContainer({ BOOKS }) {
+    const {state,dispatch} = useStore();
     function isSaved(bookId){
-       console.log(existingBooks?.includes((book)=> book.bookId === bookId));
-       return existingBooks?.includes(bookId);
+       return state?.user?.savedBooks.find(book => book.bookId == bookId) !== undefined
     }
     
     return (

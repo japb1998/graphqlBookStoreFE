@@ -1,14 +1,15 @@
 import { useLazyQuery} from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import BooksContainer from "../../components/BooksContainer/BooksContainer";
+import { useStore } from "../../store/store";
 import { GET_ME } from "../../utils/queries";
-
+import { retreiveToken } from "../../utils/auth";
 export default function BookSearch() {
-  const [existingBooks, setExistingBooks] = useState([]);
   const [books, setBooks] = useState([]);
   const [searchTerm, setTerm] = useState('');
+  const {dispatch,state} = useStore();
   const [getMe, { error, loading }] = useLazyQuery(GET_ME);
-   function onSearch(e) {
+  function onSearch(e) {
     e.preventDefault();
     fetchFromGoogle(searchTerm)
   }
@@ -39,18 +40,20 @@ export default function BookSearch() {
     }
   }
   useEffect(() => {
-    getMe().then(
-        response => {
-          console.log(response.data)
-            var savedBooks = response?.data?.getMe?.savedBooks
-            setExistingBooks(savedBooks)
-        }
-    )
-    fetchFromGoogle('Harry Potter')
+    if(!state.user && !!retreiveToken()){
+    getMe().then(({data}) => {
+      var me = data?.getMe;
+      console.log(me)
+      dispatch({action:"login",payload:{...me}});
+      console.log(state)
+    });
+    };
+    fetchFromGoogle('Harry Potter');
   }, []);
 
   return (
     <>
+      {state.user && state.user?.username}
       <div className="w-full flex justify-center mt-2 flex-col md:flex-row items-center">
         <h1 className=" mr-5 text-3xl font-extrabold">Search:</h1>
         <form onSubmit={onSearch} className="relative block w-1/2 min-w-72">
@@ -72,7 +75,6 @@ export default function BookSearch() {
       </div>
       <BooksContainer
         BOOKS={books}
-        existingBooks={existingBooks}
       />
     </>
   );
