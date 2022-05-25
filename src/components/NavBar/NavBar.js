@@ -21,7 +21,7 @@ export default function NavBar() {
         navigate("/login")
     }
     return (
-<>
+    <>
         <nav className="border-gray-800 px-2 sm:px-4 py-2.5  bg-gray-800">
             <div className="container flex flex-wrap justify-between items-center mx-auto">
                 <a  className="flex items-center">
@@ -41,7 +41,9 @@ export default function NavBar() {
                 </div>
             </div>
         </nav>
-        <nav className='rounded-full bg-gray-800 w-10 h-10 m-5 shawdow-lg' style={{position:"absolute", bottom:0,right: 0 }}></nav>
+        <div style={{position:'fixed',bottom:0,right:0}}>
+        <div className='rounded-full bg-gray-800 w-10 h-10 m-5 shawdow-lg' style={{position:"sticky", bottom:0,right: 0,zIndex:2}}></div>
+        </div>
         </>
     )
 }

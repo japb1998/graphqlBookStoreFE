@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client';
 import { useStore } from '../../store/store';
 import { SAVE_BOOK, GET_ME, REMOVE_BOOK } from "../../utils/queries";
+import './index.css'
 export default function BookCard({ book,saved,removeBook }) {
   const {dispatch} = useStore();
   //refetch queries after we add a book, so we can update the cache
@@ -13,6 +14,7 @@ export default function BookCard({ book,saved,removeBook }) {
       console.error({error})
     }
   });
+  const [colapsed,setColapsed] = useState(true)
   const [deleteBookMutation] = useMutation(REMOVE_BOOK,{
     onCompleted:({data})=>{
       dispatch({action:'deleteBook',payload:book.bookId})
@@ -37,7 +39,7 @@ export default function BookCard({ book,saved,removeBook }) {
     });
   }
     return (
-      <div className="max-w-sm h-[24rem] bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 relative">
+      <div className="max-w-sm h-[25rem] bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 relative">
         <div className="overflow-hidden w-full bg-gray-200 h-[110px] p-[5px]">
           {book?.image && (
             <img
@@ -48,17 +50,17 @@ export default function BookCard({ book,saved,removeBook }) {
           )}
         </div>
         <div className="p-5">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white max-h-[4rem] h-[4rem] overflow-scroll">
             {book?.title || "N/A"}
           </h5>
-
-          {book?.description && book?.description.length > 70 ? (
+            
+          {book?.description && colapsed && book?.description.length  > 70 ? (
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
               {book?.description.substring(0, 70)}
-              <span className="text-blue-400">...Read more</span>
+              <span className="text-blue-400" onClick={()=>{setColapsed(!colapsed)}}>...Read more</span>
             </p>
           ) : (
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 h-[8rem] overflow-scroll extended p-4" >
               {book?.description}
             </p>
           )}

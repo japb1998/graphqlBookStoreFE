@@ -6,4 +6,11 @@
 html{
     background-color: rgb(226 232 240);
     font-family: 'Acme', sans-serif;
+    
+}
+
+p::-webkit-scrollbar , h5::-webkit-scrollbar{
+    display: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

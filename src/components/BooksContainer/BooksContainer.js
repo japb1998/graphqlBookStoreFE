@@ -1,5 +1,4 @@
-import React from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
+import React from 'react';
 import { useStore } from '../../store/store';
 import BookCard from '../BookCard/BookCard'
 import './index.css'

@@ -4,6 +4,7 @@ import BooksContainer from "../../components/BooksContainer/BooksContainer";
 import { useStore } from "../../store/store";
 import { GET_ME } from "../../utils/queries";
 import { retreiveToken } from "../../utils/auth";
+import './index.css'
 export default function BookSearch() {
   const [books, setBooks] = useState([]);
   const [searchTerm, setTerm] = useState('');
@@ -50,11 +51,11 @@ export default function BookSearch() {
     };
     fetchFromGoogle('Harry Potter');
   }, []);
-
+  
   return (
     <>
-      {state.user && state.user?.username}
-      <div className="w-full flex justify-center mt-2 flex-col md:flex-row items-center">
+      {state.user && state.user?.username ? <div className="w-fit"><div className="text-3xl  ml-[100px] mt-[50px] typed-out"><span className="text-red-800">Welcome</span>, {state.user?.username}</div></div> : ""}
+      <div className="w-full flex justify-center mt-4 flex-col md:flex-row items-center">
         <h1 className=" mr-5 text-3xl font-extrabold">Search:</h1>
         <form onSubmit={onSearch} className="relative block w-1/2 min-w-72">
           <label>

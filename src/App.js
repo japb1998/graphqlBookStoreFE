@@ -15,6 +15,7 @@ function App() {
 <BrowserRouter>
 
 <NavBar/>
+
 <Routes>
 <Route path='/'  element={<BookSearch/>}/>
 <Route  element={<ProtectedRoute/>}>
